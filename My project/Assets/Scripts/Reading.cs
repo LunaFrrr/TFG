@@ -5,14 +5,26 @@ using UnityEngine.UI;
 
 public class Reading : MonoBehaviour
 {
+   
+    [SerializeField] private Toggle toggle1, toggle2, toggle3, toggle4;
+    public ToggleGroup tGroup;
     public Text question;
     public Text answer1;
     public Text answer2;
     public Text answer3;
     public Text answer4;
     public Text pages;
+    public GameObject buttonQuestion;
+    public GameObject buttonCorrect;
 
-    private int correctAnswers;
+   // public Animator animatorFadeOut;
+    private Animator animatorBook;
+
+    //Orden de las respuetas correctas 3, 3, 4, 1
+    private string final1;
+    private string final2;
+    private string final3;
+    private string final4;
 
     private string question1 = "Question 1";
     private string question2 = "Question 2";
@@ -42,7 +54,8 @@ public class Reading : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        correctAnswers = 0;
+        buttonCorrect.SetActive(true);
+        buttonQuestion.SetActive(false);
 
         pages.text = "1/4";
         question.text = question1;
@@ -50,27 +63,55 @@ public class Reading : MonoBehaviour
         answer2.text = answer2q1;
         answer3.text = answer3q1;
         answer4.text = answer4q1;
+
+        animatorBook = GetComponent<Animator>();
+        animatorBook.SetBool("Enter", true);
+        //animatorBook.SetBool("Enter", false);
+
+        //animatorBook.SetBool("Enter", true);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (tGroup.AnyTogglesOn())
+        {
+            buttonCorrect.SetActive(true);
+            
+        }
 
+        else
+            buttonCorrect.SetActive(false);
     }
 
-    public void NextQuestion()
+    public void nextQuestion()
     {
-        if(question.text == question1)
+        buttonQuestion.SetActive(false);
+
+        if (question.text == question1)
         {
+            toggle1.image.color = Color.white;
+            toggle2.image.color = Color.white;
+            toggle3.image.color = Color.white;
+            toggle4.image.color = Color.white;
+
             question.text = question2;
             answer1.text = answer1q2;
             answer2.text = answer2q2;
             answer3.text = answer3q2;
             answer4.text = answer4q2;
             pages.text = "2/4";
+
         }
-        if (question.text == question2)
+
+        else if (question.text == question2)
         {
+            toggle1.image.color = Color.white;
+            toggle2.image.color = Color.white;
+            toggle3.image.color = Color.white;
+            toggle4.image.color = Color.white;
+
             question.text = question3;
             answer1.text = answer1q3;
             answer2.text = answer2q3;
@@ -78,8 +119,14 @@ public class Reading : MonoBehaviour
             answer4.text = answer4q3;
             pages.text = "3/4";
         }
-        if (question.text == question3)
+
+        else if (question.text == question3)
         {
+            toggle1.image.color = Color.white;
+            toggle2.image.color = Color.white;
+            toggle3.image.color = Color.white;
+            toggle4.image.color = Color.white;
+
             question.text = question4;
             answer1.text = answer1q4;
             answer2.text = answer2q4;
@@ -87,9 +134,136 @@ public class Reading : MonoBehaviour
             answer4.text = answer4q4;
             pages.text = "4/4";
         }
-        if (question.text == question4)
+
+        else if (question.text == question4)
         {
-            //backButton.hide();
+        
+            animatorBook.SetBool("Exit", true);
         }
+
+        
+
     }
+
+
+    public string toggleSelected()
+    {
+        if (toggle1.isOn)
+        {
+            return answer1.text;
+        }
+
+        else if (toggle2.isOn)
+            return answer2.text;
+
+        else if (toggle3.isOn)
+            return answer3.text;
+
+        else
+            return answer4.text;
+    }
+
+    public void correctAnwser()
+    {
+        tGroup.SetAllTogglesOff();
+
+        buttonCorrect.SetActive(false);
+        buttonQuestion.SetActive(true);
+
+        if (question.text == question1)
+        {
+            final1 = toggleSelected();
+            toggle3.image.color = Color.green;
+
+            if(answer1.text == final1)
+            {
+                toggle1.image.color = Color.red;
+            }
+
+            if (answer2.text == final1)
+            {
+                toggle2.image.color = Color.red;
+            }
+
+            if (answer4.text == final1)
+            {
+                toggle4.image.color = Color.red;
+            }
+        }
+
+
+        else if (question.text == question2)
+        {
+            final2 = toggleSelected();
+            toggle3.image.color = Color.green;
+
+            if (answer1.text == final2)
+            {
+                toggle1.image.color = Color.red;
+            }
+
+            if (answer2.text == final2)
+            {
+                toggle2.image.color = Color.red;
+            }
+
+            if (answer4.text == final2)
+            {
+                toggle4.image.color = Color.red;
+            }
+        }
+
+        else if (question.text == question3)
+        {
+            final3 = toggleSelected();
+            toggle4.image.color = Color.green;
+
+            if (answer1.text == final3)
+            {
+                toggle1.image.color = Color.red;
+            }
+
+            if (answer2.text == final3)
+            {
+                toggle2.image.color = Color.red;
+            }
+
+            if (answer3.text == final3)
+            {
+                toggle3.image.color = Color.red;
+            }
+        }
+
+        else if (question.text == question4)
+        {
+            final4 = toggleSelected();
+            toggle1.image.color = Color.green;
+
+            if (answer2.text == final4)
+            {
+                toggle2.image.color = Color.red;
+            }
+
+            if (answer3.text == final4)
+            {
+                toggle3.image.color = Color.red;
+            }
+
+            if (answer4.text == final4)
+            {
+                toggle4.image.color = Color.red;
+            }
+        }
+
+    }
+
+    /*public void FadeOut()
+    {
+        animatorFadeOut.Play("FadeOut");
+    }
+
+    public void BookMovement()
+    {
+        animatorBook.Play("Book");
+    }*/
 }
