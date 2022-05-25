@@ -584,7 +584,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1435604608132186958, guid: 886a551a1fffde248b66326b06b25feb, type: 3}
   m_PrefabInstance: {fileID: 1435604607848178815}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2013268558}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -942,7 +942,7 @@ MonoBehaviour:
   pages: {fileID: 30203301}
   buttonQuestion: {fileID: 86616370}
   buttonCorrect: {fileID: 1977413282}
-  blackPanel: {fileID: 660641902}
+  blackPanel: {fileID: 2013268558}
   animatorFade: {fileID: 286680880}
   fade: {fileID: 2021367314}
   panelFade: {fileID: 286680881}
@@ -2199,7 +2199,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 93945315f8071d344931c2ccd4a54c5b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 839a02793b3274f48b9dac19612a5dea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2616,6 +2616,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977413282}
   m_CullTransparentMesh: 1
+--- !u!1 &2013268558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1435604608132186961, guid: 886a551a1fffde248b66326b06b25feb, type: 3}
+  m_PrefabInstance: {fileID: 1435604607848178815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2021367314 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5627910482563424226, guid: 225f6590ea650694c9ea7c646c924166, type: 3}
