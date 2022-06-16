@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Listening : MonoBehaviour
 {
@@ -17,12 +18,22 @@ public class Listening : MonoBehaviour
     public Animator animatorFade;
     public FadeInOut fade;
 
+    public PlayFabSelect fabSelect;
+    public SelectDay sDay;
+
     // Start is called before the first frame update
     void Start()
     {
         nQuestion = 0;
         fade.FadeIn(animatorFade);
 
+
+        if (sDay.days < 2 && sDay.days != 0)
+        {
+            sDay.days = 2;
+            Debug.Log("Antes de guardar es " + sDay.days);
+            fabSelect.SaveDays();
+        }
 
 
     }
@@ -50,7 +61,6 @@ public class Listening : MonoBehaviour
         {
             correct.text = "Incorrect...";
         }
-
         
     }
 
@@ -85,5 +95,7 @@ public class Listening : MonoBehaviour
         //Stuff before waiting
         yield return new WaitForSeconds(1.5f);
         fade.FadeOut(animatorFade);
+        yield return new WaitForSeconds(3.5f);
+        SceneManager.LoadScene("Day 3 - Library");
     }
 }

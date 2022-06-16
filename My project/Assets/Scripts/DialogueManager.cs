@@ -7,6 +7,7 @@ public class DialogueManager : MonoBehaviour
 {
     public Text nameText;
     public Text dialogueText;
+    //public Sprite characterImage;
 
     private Queue<string> sentences; 
     // Start is called before the first frame update
@@ -18,14 +19,16 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(Dialogue dialogue)
     {
         nameText.text = dialogue.name;
+        //characterImage = dialogue.character;
 
         sentences.Clear();
 
         foreach (string sentence in dialogue.sentences)
         {
             sentences.Enqueue(sentence);
-            DisplayNextSentence();
-        }    
+            
+        }
+        DisplayNextSentence();
     }
 
     public void DisplayNextSentence()

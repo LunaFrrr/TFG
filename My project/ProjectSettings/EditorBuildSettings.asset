@@ -5,7 +5,25 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/MainMenu.unity
+    guid: d816edc7f68896b4a83c21b4b3e2d451
+  - enabled: 1
+    path: Assets/Scenes/Transition.unity
+    guid: 3d75b242761e4fc409c50544ed5cfe83
+  - enabled: 1
+    path: Assets/Scenes/Day 1 - Bus.unity
+    guid: 67248fa4fd4e1534b92a48fac0c05965
+  - enabled: 1
+    path: Assets/Scenes/Day 2 - Cafe.unity
+    guid: 7e2150ad2bbda7e469aefaf134c7aa72
+  - enabled: 1
+    path: Assets/Scenes/Day 3 - Library.unity
+    guid: 57a5382c848ad734d87f728bd0925cc5
+  - enabled: 1
+    path: Assets/Scenes/Day 4 - Hospital.unity
+    guid: fa5d4c1c655dd354c9d722f5de302097
   m_configObjects: {}
