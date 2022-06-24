@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class Reading : MonoBehaviour
 {
@@ -11,16 +13,16 @@ public class Reading : MonoBehaviour
     public ToggleGroup tGroup;
     public Text question, answer1, answer2, answer3, answer4, pages, text, read;
     public GameObject buttonQuestion, buttonCorrect, blackPanel, pauseMenu;
-    public Animator animatorFade;
+    public Animator animatorFade, animatorBook;
     public FadeInOut fade;
     public Image panelFade;
-    public PlayFabControls playFabManager;
+
+    public PlayFabLeaderboard fabLeader;
 
     public SelectDay sDay;
     public PlayFabSelect fabSelect;
 
    // public Animator animatorFadeOut;
-    private Animator animatorBook;
 
     //Orden de las respuetas correctas 3, 3, 4, 1
     private string final1;
@@ -88,7 +90,6 @@ public class Reading : MonoBehaviour
         answer3.text = answer3q1;
         answer4.text = answer4q1;
 
-        animatorBook = GetComponent<Animator>();
         animatorBook.SetBool("Enter", true);
 
         correct = 0;
@@ -101,6 +102,7 @@ public class Reading : MonoBehaviour
         {
             pauseMenu.SetActive(true);
         }
+           
     }
 
     public void NextQuestion()
@@ -188,7 +190,8 @@ public class Reading : MonoBehaviour
 
         else if (question.text == question4)
         {
-            playFabManager.SendLeaderboardReading(correct);
+            fabLeader.SendLeaderboardReading(correct);
+            SaveCorrectReading();
             buttonCorrect.SetActive(false);
             animatorBook.SetBool("Exit", true);
             StartCoroutine(Wait());
@@ -333,6 +336,28 @@ public class Reading : MonoBehaviour
         SceneManager.LoadScene("Day 4 - Hospital");
     }
 
-    
+    public void SaveCorrectReading()
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                {"CorrectAnswersReading", correct.ToString() },
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
+    }
+
+    void OnDataSend(UpdateUserDataResult result)
+    {
+        Debug.Log("Succesfull user data send!");
+    }
+
+    public void OnError(PlayFabError error)
+    {
+        Debug.Log("OnERROR");
+    }
+
+
 
 }

@@ -12,29 +12,23 @@ public class SelectDay : MonoBehaviour
 
     public Button Button2, Button3, Button4;
 
+    public Canvas canvas;
+
+    private void Awake()
+    {
+        days = 0;
+        fabSelect.GetDays();
+        
+    }
     private void Start()
     {
         Debug.Log(days);
 
-        /*if (days < 2 && days != 0)
+        if (Button2)
         {
-            Button2.image.color = new Color(0.6f, 0.27f, 0.15f);
+            canvas.enabled = false;
+            StartCoroutine(Wait());
         }
-
-        if (days < 3 && days != 0)
-        {
-            Button3.image.color = new Color(0.6f, 0.27f, 0.15f);
-        }
-
-        if (days < 4 && days != 0)
-        {
-            Button4.image.color = new Color(0.6f, 0.27f, 0.15f);
-        }*/
-    }
-
-    private void Update()
-    {
-        
     }
 
     public void Day1()
@@ -76,4 +70,27 @@ public class SelectDay : MonoBehaviour
     {
         days = PlayerPrefs.GetInt("days");
     }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        if (days < 2 && days != 0)
+        {
+            Button2.image.color = new Color(0.6f, 0.27f, 0.15f);
+        }
+
+        if (days < 3 && days != 0)
+        {
+            Button3.image.color = new Color(0.6f, 0.27f, 0.15f);
+        }
+
+        if (days < 4 && days != 0)
+        {
+            Button4.image.color = new Color(0.6f, 0.27f, 0.15f);
+        }
+
+        canvas.enabled = true;
+    }
+
 }

@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class CompleteSentence : MonoBehaviour
 {
-    public GameObject correctButton, nextButton, gap, complete;
+    public GameObject correctButton, nextButton, gap, complete, pauseMenu;
     public Text nPages, correct, sentence1, sentence2, gapText;
     public Text[] wordTexts;
 
     public PlayFabSelect fabSelect;
+    public PlayFabLeaderboard fabLeader;
     public SelectDay sDay;
 
+    public Animator animatorFade, animatorBook;
+    public FadeInOut fade;
+
+    public int correctAnswers;
+
     private int nQuestion;
+
 
     //Order anwsers 1, 5, 6, 2, 6
     private string[] words1 = { "itchy", "sore", "twisted", "dry", "allergy", "cast" };
@@ -29,9 +38,12 @@ public class CompleteSentence : MonoBehaviour
     void Start()
     {
         nQuestion = 0;
+        correctAnswers = 0;
         nPages.text = "1/5";
 
         stopWords = false;
+
+        animatorBook.SetBool("Enter", true);
 
 
         if (sDay.days < 4 && sDay.days != 0)
@@ -63,6 +75,11 @@ public class CompleteSentence : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseMenu.SetActive(true);
+        }
+
     }
 
     public void Correct()
@@ -71,15 +88,17 @@ public class CompleteSentence : MonoBehaviour
         correctButton.SetActive(false);
         nextButton.SetActive(true);
 
-        for(int i = 0; i < wordTexts.Length; i++)
+        for (int i = 0; i < wordTexts.Length; i++)
         {
-            if ( wordTexts[i].transform.position.y == gap.transform.position.y)
+            if (wordTexts[i].transform.position.y == gap.transform.position.y)
             {
                 Debug.Log("Entra");
                 if (nQuestion == 0 && wordTexts[i].text == words1[0])
                 {
                     correct.text = "Correct!";
                     gapText.text = wordTexts[i].text;
+                    gapText.color = new Color(0.438786f, 0.7830189f, 0.5122764f);
+                    correctAnswers++;
                     break;
                 }
 
@@ -88,6 +107,8 @@ public class CompleteSentence : MonoBehaviour
                 {
                     correct.text = "Correct!";
                     gapText.text = wordTexts[i].text;
+                    gapText.color = new Color(0.05677315f, 0.3867925f, 0.02335349f);
+                    correctAnswers++;
                     break;
                 }
 
@@ -95,6 +116,8 @@ public class CompleteSentence : MonoBehaviour
                 {
                     correct.text = "Correct!";
                     gapText.text = wordTexts[i].text;
+                    gapText.color = new Color(0.05677315f, 0.3867925f, 0.02335349f);
+                    correctAnswers++;
                     break;
                 }
 
@@ -102,6 +125,8 @@ public class CompleteSentence : MonoBehaviour
                 {
                     correct.text = "Correct!";
                     gapText.text = wordTexts[i].text;
+                    gapText.color = new Color(0.05677315f, 0.3867925f, 0.02335349f);
+                    correctAnswers++;
                     break;
                 }
 
@@ -109,6 +134,8 @@ public class CompleteSentence : MonoBehaviour
                 {
                     correct.text = "Correct!";
                     gapText.text = wordTexts[i].text;
+                    gapText.color = new Color(0.05677315f, 0.3867925f, 0.02335349f);
+                    correctAnswers++;
                     break;
                 }
 
@@ -116,9 +143,10 @@ public class CompleteSentence : MonoBehaviour
             }
 
             else
+            {
                 correct.text = "Incorrect...";
-
-            
+                gapText.color = Color.red;
+            }
         }
 
 
@@ -131,6 +159,7 @@ public class CompleteSentence : MonoBehaviour
         correctButton.SetActive(true);
         nextButton.SetActive(false);
         correct.text = "";
+        gapText.color = new Color(0.196f, 0.196f, 0.196f);
         gapText.text = "________________";
 
         stopWords = false;
@@ -195,19 +224,40 @@ public class CompleteSentence : MonoBehaviour
         {
             correctButton.SetActive(false);
             nPages.text = "5/5";
+            fabLeader.SendLeaderboardComplete(correctAnswers);
+            SaveCorrectComplete();
+            animatorBook.SetBool("Exit", true);
             StartCoroutine(Wait());
 
         }
     }
 
-    IEnumerator Wait()
-    {
-        //To wait, type this:
-
-        //Stuff before waiting
+    IEnumerator Wait() { 
         yield return new WaitForSeconds(1.5f);
-        //fade.FadeOut(animatorFade);
+        fade.FadeOut(animatorFade);
         yield return new WaitForSeconds(3.5f);
-        //SceneManager.LoadScene("Transition");
+        SceneManager.LoadScene("Transition");
+    }
+
+    public void SaveCorrectComplete()
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                {"CorrectAnswersComplete", correctAnswers.ToString() },
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
+    }
+
+    void OnDataSend(UpdateUserDataResult result)
+    {
+        Debug.Log("Succesfull user data send!");
+    }
+
+    public void OnError(PlayFabError error)
+    {
+        Debug.Log("OnERROR");
     }
 }

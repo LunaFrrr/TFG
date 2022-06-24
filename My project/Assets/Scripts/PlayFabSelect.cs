@@ -49,7 +49,7 @@ public class PlayFabSelect : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Days", selectDay.days.ToString() }
+                {"Days", selectDay.days.ToString() },
             }
         };
         PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);

@@ -7,26 +7,38 @@ public class DialogueManager : MonoBehaviour
 {
     public Text nameText;
     public Text dialogueText;
-    //public Sprite characterImage;
+    public GameObject dialogueBox, startDialogueButton, character;
+    
 
-    private Queue<string> sentences; 
+    private Queue<string> sentences;
+    private Queue<string> names;
+
+    public bool end;
     // Start is called before the first frame update
     void Start()
     {
-        sentences = new Queue<string>();   
+        sentences = new Queue<string>();
+        names = new Queue<string>();
+        end = false;
+        
     }
 
     public void StartDialogue(Dialogue dialogue)
     {
-        nameText.text = dialogue.name;
-        //characterImage = dialogue.character;
-
+        dialogueBox.SetActive(true);
+        startDialogueButton.SetActive(false);
+        character.SetActive(true);
         sentences.Clear();
+        names.Clear();
+
+        foreach (string name in dialogue.names)
+        {
+            names.Enqueue(name);
+        }
 
         foreach (string sentence in dialogue.sentences)
         {
-            sentences.Enqueue(sentence);
-            
+            sentences.Enqueue(sentence);    
         }
         DisplayNextSentence();
     }
@@ -40,15 +52,16 @@ public class DialogueManager : MonoBehaviour
         }
 
         string sentence = sentences.Dequeue();
+        string name = names.Dequeue();
 
         //Para evitar solapar las animaciones de texto
         StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(TypeSentence(sentence, name));
 
     }
 
     //Introducir texto letra a letra
-    IEnumerator TypeSentence (string sentence)
+    IEnumerator TypeSentence (string sentence, string name)
     {
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
@@ -56,10 +69,14 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += letter;
             yield return null;
         }
+
+        nameText.text = name;
     }
 
     void EndDialogue()
     {
-
+        dialogueBox.SetActive(false);
+        character.SetActive(false);
+        end = true;
     }
 }

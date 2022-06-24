@@ -645,6 +645,7 @@ MonoBehaviour:
   Button2: {fileID: 1191100326}
   Button3: {fileID: 121912805}
   Button4: {fileID: 356713518}
+  canvas: {fileID: 1337202239}
 --- !u!114 &598622153 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2176322606080968471, guid: 5247b6aa45cab884db8e13c3f86d96c5, type: 3}

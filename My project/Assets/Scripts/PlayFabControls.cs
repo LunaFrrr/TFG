@@ -8,11 +8,14 @@ using UnityEngine.UI;
 using PlayFab;
 using PlayFab.ClientModels;
 
+
 public class PlayFabControls : MonoBehaviour
 {
     [SerializeField] GameObject signUpTab, loginTab, startPanel, HUD;
     public Text userName, userEmail, userPassword, userEmailLogin, userPasswordLogin, errorSignUp, errorLogin;
     string encryptedPassword;
+
+    public string playerId;
 
     public void SwitchToSignUpTab()
     {
@@ -88,68 +91,5 @@ public class PlayFabControls : MonoBehaviour
 
     }
 
-    public void SendLeaderboardReading(int score)
-    {
-        var request = new UpdatePlayerStatisticsRequest
-        {
-            Statistics = new List<StatisticUpdate>
-            {
-                new StatisticUpdate{
-
-                    StatisticName = "CorrectAnswersReading",
-                    Value = score
-                }
-            }
-        };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, LoginError);
-    }
-
-    public void SendLeaderboardListening(int score)
-    {
-        var request = new UpdatePlayerStatisticsRequest
-        {
-            Statistics = new List<StatisticUpdate>
-            {
-                new StatisticUpdate{
-
-                    StatisticName = "CorrectAnswersListening",
-                    Value = score
-                }
-            }
-        };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, LoginError);
-    }
-
-
-    void OnLeaderboardUpdate(UpdatePlayerStatisticsResult result)
-    {
-        Debug.Log("Succesfull leaderboard sent");
-    }
-
-    public void GetLeaderBoardReading()
-    {
-        var request = new GetLeaderboardRequest
-        {
-            StatisticName = "CorrectAnswersReading",
-            StartPosition = 0
-        };
-        PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardGet, LoginError);
-    }
-
-    void OnLeaderboardGet(GetLeaderboardResult result)
-    {
-        int winners = 0;
-        int players = 0;
-        foreach(var item in result.Leaderboard)
-        {
-            Debug.Log(item.Position + "" + item.PlayFabId + "" + item.StatValue);
-            if (item.StatValue == 4)
-                winners++;
-
-            players++;
-        }
-
-        Debug.Log("Porcentaje aciertos: " + winners * 100 / players); 
-    }
 }
 
